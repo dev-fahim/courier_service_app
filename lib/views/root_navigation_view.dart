@@ -22,14 +22,11 @@ class _RootNavigationViewState extends State<RootNavigationView> {
   Widget build(BuildContext context) {
     return NavigationView(
       appBar: NavigationAppBar(
-        title: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 10.0),
-          child: Align(
-            alignment: AlignmentDirectional.center,
-            child: Text(
-              appName,
-              style: FluentTheme.of(context).typography.title,
-            ),
+        title: Align(
+          alignment: AlignmentDirectional.center,
+          child: Text(
+            appName,
+            style: FluentTheme.of(context).typography.title,
           ),
         ),
         automaticallyImplyLeading: false,

@@ -11,7 +11,9 @@ class DefaultPage extends StatelessWidget {
     return SizedBox(
       width: double.maxFinite,
       child: SingleChildScrollView(
+        physics: const ClampingScrollPhysics(),
         child: SingleChildScrollView(
+          physics: const ClampingScrollPhysics(),
           scrollDirection: Axis.horizontal,
           child: Padding(
             padding: defaultPagePadding,
