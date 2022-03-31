@@ -6,9 +6,8 @@ import 'package:http/http.dart' as http;
 
 class CustomerRepository {
   Future<CustomersListInApiModel> getCustomers(String? contactNumber) async {
-    http.Response res =
-        await http.get(buildCustomersApiEndpoint(contactNumber));
-    return CustomersListInApiModel.fromJson(
-        jsonDecode(res.body));
+    http.Response res = await http.get(buildCustomersApiEndpoint(contactNumber),
+        headers: {'Authentication': 'Bearer $token'});
+    return CustomersListInApiModel.fromJson(jsonDecode(res.body));
   }
 }

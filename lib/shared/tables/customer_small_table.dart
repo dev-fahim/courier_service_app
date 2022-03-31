@@ -34,7 +34,7 @@ class CustomerSmallTable extends StatelessWidget {
               DataRow(
                 onSelectChanged: (selected) {
                   if (selected == true) {
-                    onTap(i);
+                    onTap(i - 1);
                   }
                 },
                 selected: selectedRowSub == data.sub,

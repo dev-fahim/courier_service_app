@@ -1,5 +1,7 @@
 import 'package:courier_service/models/api_models/branch_api_model.dart';
+import 'package:courier_service/models/api_models/create_booking_out_api_model.dart';
 import 'package:courier_service/models/api_models/customers_list_in_api_model.dart';
+import 'package:courier_service/repos/booking_repo.dart';
 import 'package:courier_service/repos/branch_repo.dart';
 import 'package:courier_service/res/defaults.dart';
 import 'package:courier_service/res/dimens.dart';
@@ -25,6 +27,7 @@ class BookingCreate extends StatefulWidget {
 class _BookingCreateState extends State<BookingCreate> {
   final branchRepo = BranchRepository();
   final customerRepo = CustomerRepository();
+  final bookingRepo = BookingRepository();
 
   List<BranchListData> _branchList = [];
   List<CustomersListData> _customerList = [];
@@ -73,7 +76,7 @@ class _BookingCreateState extends State<BookingCreate> {
         child: Padding(
           padding: defaultSubPagePadding,
           child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               SizedBox(
@@ -164,13 +167,87 @@ class _BookingCreateState extends State<BookingCreate> {
                       autofocus: true,
                       header: "Address District",
                     ),
+                    defaultFormBetweenPadding,
+                    defaultFormBetweenPadding,
+                    Text(
+                      "Parcel Meta Data",
+                      style: FluentTheme.of(context).typography.bodyLarge,
+                    ),
+                    defaultFormBetweenPadding,
+                    const Divider(
+                      style:
+                          DividerThemeData(horizontalMargin: EdgeInsets.zero),
+                    ),
+                    defaultFormBetweenPadding,
+                    defaultFormBetweenPadding,
+                    TextFormBox(
+                      controller: _lotQuantityF,
+                      autofocus: true,
+                      header: "LOT Quantity",
+                    ),
+                    defaultFormBetweenPadding,
+                    TextFormBox(
+                      controller: _descriptionF,
+                      autofocus: true,
+                      header: "Parcel Description",
+                    ),
+                    defaultFormBetweenPadding,
+                    TextFormBox(
+                      controller: _remarksF,
+                      autofocus: true,
+                      header: "Remarks",
+                    ),
+                    defaultFormBetweenPadding,
+                    TextFormBox(
+                      controller: _deliveryInstructionsF,
+                      autofocus: true,
+                      header: "Deliver Instructions",
+                    ),
+                    defaultFormBetweenPadding,
+                    defaultFormBetweenPadding,
+                    Text(
+                      "Charge Data",
+                      style: FluentTheme.of(context).typography.bodyLarge,
+                    ),
+                    defaultFormBetweenPadding,
+                    const Divider(
+                      style:
+                          DividerThemeData(horizontalMargin: EdgeInsets.zero),
+                    ),
+                    defaultFormBetweenPadding,
+                    defaultFormBetweenPadding,
+                    TextFormBox(
+                      controller: _serviceChargeF,
+                      autofocus: true,
+                      header: "Service Charge",
+                    ),
+                    defaultFormBetweenPadding,
+                    TextFormBox(
+                      controller: _conditionAmountF,
+                      autofocus: true,
+                      header: "Condition Charge",
+                    ),
+                    defaultFormBetweenPadding,
+                    TextFormBox(
+                      controller: _referenceF,
+                      autofocus: true,
+                      header: "Reference",
+                    ),
+                    defaultFormBetweenPadding,
+                    defaultFormBetweenPadding,
+                    FilledButton(child: const Text("Book Now"), onPressed: () {
+                      _createBooking();
+                    }),
+                    defaultFormBetweenPadding,
+                    defaultFormBetweenPadding,
                   ],
                 ),
               ),
+              const SizedBox(
+                width: 50,
+              ),
               Container(
-                constraints: const BoxConstraints(
-                  maxWidth: dp1000
-                ),
+                constraints: const BoxConstraints(maxWidth: dp1000),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.start,
@@ -189,16 +266,26 @@ class _BookingCreateState extends State<BookingCreate> {
                               prefix: IconButton(
                                   icon: const Icon(FluentIcons.search),
                                   onPressed: () {
-                                    _getAllCustomers(_customerSearch.text.trim());
-                                  }
-                              ),
+                                    _getAllCustomers(
+                                        _customerSearch.text.trim());
+                                  }),
                             ),
                             CustomerSmallTable(
                               customerList: _customerList,
                               selectedRowSub: customerSub,
                               onTap: (index) {
                                 customerSub = _customerList[index].sub ?? -1;
-                                _senderNameF.text = _customerList[index].name ?? "";
+                                _senderNameF.text =
+                                    _customerList[index].name ?? "";
+                                _senderPrimaryContactF.text =
+                                    _customerList[index].primaryContactNumber ??
+                                        "";
+                                _senderAddressLineOneF.text =
+                                    _customerList[index].addressLineOne ?? "";
+                                _senderAddressLineTwoF.text =
+                                    _customerList[index].addressLineTwo ?? "";
+                                _senderAddressDistrictF.text =
+                                    _customerList[index].addressDistrict ?? "";
                                 setState(() {});
                               },
                             )
@@ -207,7 +294,9 @@ class _BookingCreateState extends State<BookingCreate> {
                       ),
                       height: dp350,
                     ),
-                    const SizedBox(height: 50,),
+                    const SizedBox(
+                      height: 50,
+                    ),
                     SizedBox(
                       child: SingleChildScrollView(
                         child: Column(
@@ -223,8 +312,7 @@ class _BookingCreateState extends State<BookingCreate> {
                                   icon: const Icon(FluentIcons.search),
                                   onPressed: () {
                                     _getAllBranches(_branchSearch.text.trim());
-                                  }
-                              ),
+                                  }),
                             ),
                             BranchSmallTable(
                               branchList: _branchList,
@@ -259,5 +347,50 @@ class _BookingCreateState extends State<BookingCreate> {
     CustomersListInApiModel data = await customerRepo.getCustomers(q);
     _customerList = data.data ?? [];
     setState(() {});
+  }
+
+  Future<void> _createBooking() async {
+    await bookingRepo.createBooking(_constructPayload());
+  }
+
+  CreateBookingOutApiModel _constructPayload() {
+    CreateBookingOutApiModel payload = CreateBookingOutApiModel.fromJson(
+      {
+        "description": _descriptionF.text.trim(),
+        "remarks": _remarksF.text.trim(),
+        "sender_sub": customerSub == -1 ? null : customerSub,
+        "reference": _referenceF.text.trim(),
+        "service_type": "EX/S",
+        "condition_amount": double.parse(_conditionAmountF.text.trim()),
+        "service_charge": double.parse(_serviceChargeF.text.trim()),
+        "delivery": {
+          "address_line_one": _receiverAddressLineOneF.text.trim(),
+          "address_line_two": _receiverAddressLineTwoF.text.trim(),
+          "address_district": _receiverAddressDistrictF.text.trim(),
+          "primary_contact_number": _receiverPrimaryContactF.text.trim(),
+          "destination_branch_id": branchSub,
+          "lot_quantity": int.parse(_lotQuantityF.text.trim()),
+          "is_dangerous_goods": false,
+          "delivery_instructions": _deliveryInstructionsF.text.trim(),
+          "delivery_mode": "O/D"
+        },
+        "sender": {
+          "customer": {
+            "address_line_one": _senderAddressLineOneF.text.trim(),
+            "address_line_two": _senderAddressLineTwoF.text.trim(),
+            "address_district": _senderAddressDistrictF.text.trim(),
+            "primary_contact_number": _senderPrimaryContactF.text.trim(),
+            "name": _senderNameF.text.trim(),
+          },
+          "contact_name": _senderNameF.text.trim()
+        },
+        "receiver": {
+          "contact_name": _receiverNameF.text.trim()
+        },
+        'parcels': []
+      }
+    );
+
+    return payload;
   }
 }
