@@ -5,7 +5,10 @@ const EdgeInsets defaultCardPadding =
 const EdgeInsets defaultPageHeaderPadding =
     EdgeInsets.only(left: 20, bottom: 30, right: 20);
 const EdgeInsets defaultPagePadding = EdgeInsets.zero;
+const EdgeInsets defaultSubPagePadding = EdgeInsets.all(20);
 const EdgeInsets defaultTableCellPadding = EdgeInsets.symmetric(vertical: 20);
+
+const defaultFormBetweenPadding = SizedBox(height: 10,);
 
 const double defaultAuthenticationCardWidth = 350;
 const double defaultAuthenticationCardHeight = 350;

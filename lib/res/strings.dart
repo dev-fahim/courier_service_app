@@ -1,6 +1,9 @@
 const String defaultText = "Text";
 const String textBlank = '';
 
+// Button
+const String backButtonName = "Back";
+
 const String appName = "Courier Service Management System";
 
 const String navPaneUsers = "Users";
@@ -68,3 +71,5 @@ const String bookingsTableRowHeaderParcelDescription = "PARCEL DESCRIPTION";
 
 const String bookingsTablePageHeader = "Bookings";
 const String bookingsBtnAdd = "Add Booking";
+
+const bookingCreatePageHeader = "Create Booking";

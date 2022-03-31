@@ -1,4 +1,4 @@
-import 'package:courier_service/models/customer_table_model.dart';
+import 'package:courier_service/models/internals/customer_table_model.dart';
 import 'package:courier_service/res/strings.dart';
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:flutter/material.dart';

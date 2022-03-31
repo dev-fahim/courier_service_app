@@ -1,4 +1,4 @@
-import 'package:courier_service/models/customer_table_model.dart';
+import 'package:courier_service/models/internals/customer_table_model.dart';
 
 List<CustomerTableModel> customers = [
   CustomerTableModel(45509821, 'Fahim Al Islam', 'Tongi, Gazipur, Dhaka - 1711',

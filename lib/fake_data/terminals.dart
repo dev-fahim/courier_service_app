@@ -1,4 +1,4 @@
-import 'package:courier_service/models/terminal_table_model.dart';
+import 'package:courier_service/models/internals/terminal_table_model.dart';
 
 List<TerminalTableModel> terminals = [
   TerminalTableModel(

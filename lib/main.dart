@@ -1,4 +1,5 @@
 import 'package:courier_service/res/strings.dart';
+import 'package:courier_service/views/booking_add_view.dart';
 import 'package:fluent_ui/fluent_ui.dart';
 
 import 'views/root_navigation_view.dart';
@@ -26,7 +27,8 @@ class CourierServiceSystem extends StatelessWidget {
       ),
       title: appName,
       routes: {
-        '/': (_) => const RootNavigationView()
+        '/': (_) => const RootNavigationView(),
+        BookingCreate.routeName: (_) => const BookingCreate(),
       },
       initialRoute: '/',
       builder: (context, child) {

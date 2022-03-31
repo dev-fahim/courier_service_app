@@ -1,4 +1,4 @@
-import 'package:courier_service/models/booking_table_model.dart';
+import 'package:courier_service/models/internals/booking_table_model.dart';
 
 List<BookingTableModel> bookings = [
   BookingTableModel(

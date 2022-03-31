@@ -1,4 +1,4 @@
-import 'package:courier_service/models/carrier_table_model.dart';
+import 'package:courier_service/models/internals/carrier_table_model.dart';
 
 List<CarrierTableModel> carriers = [
   CarrierTableModel(

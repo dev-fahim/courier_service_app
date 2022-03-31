@@ -1,4 +1,4 @@
-import 'package:courier_service/models/user_table_model.dart';
+import 'package:courier_service/models/internals/user_table_model.dart';
 
 List<UserTableModel> users = [
   UserTableModel(787687, 'dev-fahim', 'Fahim Al Islam', 'Mohammadpur, Dhaka',
